@@ -2,7 +2,7 @@
 var text url_1 = URLRoot() & "db/" & [_DBID_<child table name>] & "?act=API_GenAddRecordForm" &
     "&_fid_<reference field id>=" & [Record ID#] & "&z=" & Rurl();
 
-// manually edit the current record and return to the url from which you started
+// manually edit the current record and return to the URL from which you started
 var text url_2 = URLRoot() & "db/" & Dbid() & "?a=er&rid=" & URLEncode([Record ID#]) & "&dfid=<form id>" & "&z=" & Rurl();
 
 // automatically update a record and return to the URL from which you started
