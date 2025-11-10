@@ -1,1 +1,11 @@
-// extract user from most recent log field update
+// Timestamp from last log entry
+Part(Right([Status Change Log], "["),1," ") & " " &
+Part(Right([Status Change Log], "["),2," ") & " " &
+Part(Right([Status Change Log], "["),3," ")
+
+// Author of last log entry
+Part(Right([Status Change Log], "["),4," ") & " " &
+Left(Part(Right([Status Change Log], "["),5," "),"]")
+
+// Last log entry
+Trim(Right([Status Change Log], "]"))
