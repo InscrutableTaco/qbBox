@@ -4,13 +4,8 @@ var text alert = If([# of Days Late] > 0,
 [# of Days Late] & " days late" & "</b></i></span>","");
 
 // based on a one or more criteria.
-var text criteria_1 = if([# of Days Late] > 0,
-"Ticket is " & [# of Days Late] & " days late","")
-var text criteria_2 = if([Customer - VIP?] = true,
-"VIP customer","")
-var text criteria_3 = if([Escalated] and [Date Due] = Today(),
-"Escalated ticket due")
+var text criteria_1 = if([# of Days Late] > 0, "Ticket is " & [# of Days Late] & " days late","")
+var text criteria_2 = if([Customer - VIP?] = true, "VIP customer","")
+var text criteria_3 = if([Escalated] and [Date Due] = Today(), "Escalated ticket due")
 var text alert = "<span style='font-size:20px;color:#e61515'><i><b>" &
-List(
-    "<p>",$criteria_1,$criteria_2,$criteria_3
-) & "</b></i></span>"
+    List("<p>",$criteria_1,$criteria_2,$criteria_3) & "</b></i></span>";
