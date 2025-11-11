@@ -1,11 +1,26 @@
-// Timestamp from last log entry
+// Extracting data from a log field utilizing timestamps 
+
+// last entry timestamp
 Part(Right([Status Change Log], "["),1," ") & " " &
 Part(Right([Status Change Log], "["),2," ") & " " &
 Part(Right([Status Change Log], "["),3," ")
 
-// Author of last log entry
+// last entry author
 Part(Right([Status Change Log], "["),4," ") & " " &
 Left(Part(Right([Status Change Log], "["),5," "),"]")
 
-// Last log entry
+
+// last entry
 Trim(Right([Status Change Log], "]"))
+
+// first entry timestamp
+Right(Part(Left([Status Change Log], "]"),1," "),"[") & " " &
+Part(Left([Status Change Log], "]"),2," ") & " " &
+Trim(Part(Left([Status Change Log], "]"),3," "))
+
+// first entry author 
+Part(Left([Status Change Log], "]"),4," ") & " " &
+Right(Part(Left([Status Change Log], "]"),5," "),"[]")
+
+// first entry
+Right(Left(NotLeft([Status Change Log], "["),"["), "]")
