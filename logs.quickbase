@@ -9,7 +9,6 @@ Part(Right([Status Change Log], "["),3," ")
 Part(Right([Status Change Log], "["),4," ") & " " &
 Left(Part(Right([Status Change Log], "["),5," "),"]")
 
-
 // last entry
 Trim(Right([Status Change Log], "]"))
 
