@@ -12,3 +12,21 @@ var text url_3 = URLRoot() & "db/" & [_DBID_<table name>] & "?a=API_EditRecord&r
 // automatically update a record and redirect to a specific page (or any url)
 var text url_4 = URLRoot() & "db/" & [_DBID_<table name>] & "?a=API_EditRecord&rid="  & [Record ID#] &
     "&_fid_99=1" & "&rdr=" & URLEncode(URLRoot() & "db/" & Dbid() & "?a=dbpage&pageID=<page id>");
+
+
+var text relfids = // report link FIDs
+    "11,20,22,9" // removed 13 on 20230621
+;
+
+// Rich text button. See other class options at https://help.quickbase.com/docs/formula-rich-text-field-properties
+var text url = "url here"
+;
+var text label =
+    "info text here";
+var text button =
+    "<a title='"& $label &"' class='Vibrant Alert SaveBeforeNavigating' href='" & $url & "'>Button text here</a>"
+;
+If(
+    [Some Field]="whatever criteria for the button to display",
+    $button,""
+)
