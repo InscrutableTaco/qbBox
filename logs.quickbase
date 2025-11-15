@@ -9,7 +9,7 @@ Part(Right([Status Change Log], "["),3," ")
 Part(Right([Status Change Log], "["),4," ") & " " &
 Left(Part(Right([Status Change Log], "["),5," "),"]")
 
-// last entry
+// last entry - syntax highlighting past the ] is broken past this point here and even in quickbase, even though the code is valid. 
 Trim(Right([Status Change Log], "]"))
 
 // first entry timestamp

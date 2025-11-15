@@ -18,7 +18,7 @@ var text relfids = // report link FIDs
     "11,20,22,9" // removed 13 on 20230621
 ;
 
-// Rich text button. See other class options at https://help.quickbase.com/docs/formula-rich-text-field-properties
+// Rich text button. More CSS class options at https://help.quickbase.com/docs/formula-rich-text-field-properties
 var text url = "url here"
 ;
 var text label =
@@ -27,6 +27,6 @@ var text button =
     "<a title='"& $label &"' class='Vibrant Alert SaveBeforeNavigating' href='" & $url & "'>Button text here</a>"
 ;
 If(
-    [Some Field]="whatever criteria for the button to display",
+    [Some Field]="criteria for button to display",
     $button,""
 )
