@@ -4,9 +4,9 @@ var text alert = If([# of Days Late] > 0,
 [# of Days Late] & " days late" & "</b></i></span>","");
 
 // based on multiple criteria.
-var text criteriaOne = "whatever alert";
-var text criteriaTwo = "criteria you";
-var text criteriaThree = "want here";
+var text criteriaOne = "first alert msg";
+var text criteriaTwo = "2nd alert msg";
+var text criteriaThree = "3rd alert msg";
 
-"<span style='font-size:20px;color:#e61515'><i><b>" &
-List("<p>",$criteriaOne,$criteriaTwo,$criteriaThree) & "</b></i></span>"
+"<span style='font-size:16px;color:#e61515'><i><b>" &
+List("<br>",$criteriaOne,$criteriaTwo,$criteriaThree) & "</b></i></span>"
