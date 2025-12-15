@@ -1,0 +1,42 @@
+// access previous field value
+{{a.$prev.status}} // field called status
+
+// Clear/remove a value
+{{CLEAR}}
+
+// Clear/remove a value if the writing value is null
+{{CLEAR if a.status is none else a.status}}
+
+// Add two values together
+{{a.value_1 + a.value_2}}
+
+// Count the number of items found in a search/query
+{{a|count}}
+
+// basic if statement
+{% if [condition_1] %}
+    [result if true]
+{% elif [condition_2] %} // optional
+    [result if true]
+{% else %} // optional
+    [otherwise result]
+{% endif %}
+
+// basic loop
+{% for item in list %}
+    [do something]
+{% endfor %}
+
+// loop over a dictionary
+{% for key, value in dictionary.items() %}
+    {{ key }}: {{ value }}
+{% endfor %}
+
+// in-line conditional with a for loop
+{%- for item in list if [condition_1] and [condition_2] -%}
+
+// loop through fields of a record
+{{metadata.a.struct.items()}}
+
+// Current loop index
+{{metadata.a.loop.index}}
