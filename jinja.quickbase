@@ -20,6 +20,21 @@
 // In-line conditional with a for loop
 {%- for item in list if [condition_1] and [condition_2] -%}
 
+// Comments
+{# this is a comment #}
+
+// Variable types
+// Boolean - represents the values true and false
+// Integer - Integers are whole numbers without a decimal part.
+// Floating point - numbers can be written using a ‘.’ as a decimal mark
+// Sequence [‘a’] everything between the two brackets is a list.
+// String -a sequence of characters, either as a literal constant or as some kind of variable
+// Tuple - can contain two values of different data types
+// Mappings - {'dict': 'of', 'key': 'and', 'value': 'pairs'}
+
+// Variable declaration
+{% set iterated = false %}
+
 // Previous field value
 {{a.$prev.status}} // field called status
 
@@ -57,31 +72,47 @@
 {{a|count}}
 
 // Current date. Prefer this to {{ time.today }} which doesn't account for time zone
-{{ time.now }}
+{{time.now }}
 
 // Adjust time
-{{ time.now + time.delta(hours=1) }} // days / months / years
+{{time.now + time.delta(hours=1)}} // days / months / years
 
 // # of days between two dates
 {{(a.date_1 - a.date_2).days}}
 
 // Time zones:
-{{ time.now|timezone('America/New_York') }} // Eastern
-{{ time.now|timezone('America/Chicago') }} // Central
-{{ time.now|timezone('America/Denver') }} // Mountain
-{{ time.now|timezone('America/Los_Angeles') }} // Pacific
+{{time.now|timezone('America/New_York')}} // Eastern
+{{time.now|timezone('America/Chicago')}} // Central
+{{time.now|timezone('America/Denver')}} // Mountain
+{{time.now|timezone('America/Los_Angeles')}} // Pacific
 
 // format a time
-{{ time.now|date_ymd }} // 2025-12-31
-{{ time.now|date_dmy('/') }} // 31/12/2025
-{{ time.now|date_mdy('.') }} // 12.31.2025
-{{ time.now.strftime('%Y%m') }} // 202512
+{{time.now|date_ymd}} // 2025-12-31
+{{time.now|date_dmy('/')}} // 31/12/2025
+{{time.now|date_mdy('.')}} // 12.31.2025
+{{time.now.strftime('%Y%m')}} // 202512
 
 // Parse a date time value from a Quickbase step into a format that the restful API can consume.
 {{a.created_at.strftime('%Y-%m-%dT%H:%M:%S')}}
 
-// list of fields of a record as key/value pairs (e.g. for looping through)
+// List of fields of a record as key/value pairs (e.g. for looping through)
 {{metadata.a.struct.items()}}
 
-// Current loop index
+// Current loop index (first loop is 1)
 {{metadata.a.loop.index}}
+
+// Pipeline id
+{{runtime.pipeline_id}}
+
+// Pipeline name
+{{runtime.pipeline_name}}
+
+// Pipeline url
+{{runtime.pipeline_url}}
+
+// Url for current run's activities
+{{runtime.activity_url}}
+
+// Pipeline trigger timestamp
+{{runtime.triggered_at}}
+
