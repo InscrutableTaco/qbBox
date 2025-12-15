@@ -14,7 +14,3 @@ Case(Month([Your-Date-Field]),
 11,"11-Nov",
 12,"12-Dec",
 "Error")
-
-// jinja for current date. (in general do not use {{ time.today }})
-
-{{ time.now }}

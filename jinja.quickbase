@@ -7,11 +7,35 @@
 // Clear/remove a value if the writing value is null
 {{CLEAR if a.status is none else a.status}}
 
+// Check if a field is blank/null
+{% if a.field_label is none %}TRUE{% endif %}
+
 // Add two values together
 {{a.value_1 + a.value_2}}
 
 // Count the number of items found in a search/query
 {{a|count}}
+
+// Current date. Prefer this to {{ time.today }} which doesn't account for time zone
+{{ time.now }}
+
+// adjust time
+{{ time.now + time.delta(hours=1) }} // days / months / years
+
+// time zones:
+{{ time.now|timezone('America/New_York') }} // Eastern
+{{ time.now|timezone('America/Chicago') }} // Central
+{{ time.now|timezone('America/Denver') }} // Mountain
+{{ time.now|timezone('America/Los_Angeles') }} // Pacific
+
+// format a time
+{{ time.now|date_ymd }} // 2025-12-31
+{{ time.now|date_dmy('/') }} // 31/12/2025
+{{ time.now|date_mdy('.') }} // 12.31.2025
+{{ time.now.strftime('%Y%m') }} // 202512
+
+// Parses a date time value from a Quickbase step into a format that the restful API can consume.
+{{a.created_at.strftime('%Y-%m-%dT%H:%M:%S')}}
 
 // basic if statement
 {% if [condition_1] %}
@@ -35,7 +59,7 @@
 // in-line conditional with a for loop
 {%- for item in list if [condition_1] and [condition_2] -%}
 
-// loop through fields of a record
+// list of fields of a record as key/value pairs (e.g. for looping through)
 {{metadata.a.struct.items()}}
 
 // Current loop index
