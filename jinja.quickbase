@@ -1,42 +1,3 @@
-// access previous field value
-{{a.$prev.status}} // field called status
-
-// Clear/remove a value
-{{CLEAR}}
-
-// Clear/remove a value if the writing value is null
-{{CLEAR if a.status is none else a.status}}
-
-// Check if a field is blank/null
-{% if a.field_label is none %}TRUE{% endif %}
-
-// Add two values together
-{{a.value_1 + a.value_2}}
-
-// Count the number of items found in a search/query
-{{a|count}}
-
-// Current date. Prefer this to {{ time.today }} which doesn't account for time zone
-{{ time.now }}
-
-// adjust time
-{{ time.now + time.delta(hours=1) }} // days / months / years
-
-// time zones:
-{{ time.now|timezone('America/New_York') }} // Eastern
-{{ time.now|timezone('America/Chicago') }} // Central
-{{ time.now|timezone('America/Denver') }} // Mountain
-{{ time.now|timezone('America/Los_Angeles') }} // Pacific
-
-// format a time
-{{ time.now|date_ymd }} // 2025-12-31
-{{ time.now|date_dmy('/') }} // 31/12/2025
-{{ time.now|date_mdy('.') }} // 12.31.2025
-{{ time.now.strftime('%Y%m') }} // 202512
-
-// Parses a date time value from a Quickbase step into a format that the restful API can consume.
-{{a.created_at.strftime('%Y-%m-%dT%H:%M:%S')}}
-
 // basic if statement
 {% if [condition_1] %}
     [result if true]
@@ -56,8 +17,68 @@
     {{ key }}: {{ value }}
 {% endfor %}
 
-// in-line conditional with a for loop
+// In-line conditional with a for loop
 {%- for item in list if [condition_1] and [condition_2] -%}
+
+// Previous field value
+{{a.$prev.status}} // field called status
+
+// Clear/remove a value
+{{CLEAR}}
+
+// Clear/remove a value if the writing value is null
+{{CLEAR if a.status is none else a.status}}
+
+// Check if a field is blank/null
+{% if a.field_label is none %}TRUE{% endif %}
+
+// Add two values together
+{{a.value_1 + a.value_2}}
+
+// Convert text to an integer or a floating-point number
+{{a.value|int }} {{a.value|float}}
+
+// Change case
+{{a.field|upper}} {{a.field|lower}}
+
+// Append a value
+{{a.name|append('new_name')}}
+
+// Remove all HTML tags and formatting
+{{a.body|text}}
+
+// Convert to markdown
+{{a.body|html2text}}
+
+// Convert to HTML-safe sequence
+{{a.value|escape}}
+
+// Count the number of items found in a search/query
+{{a|count}}
+
+// Current date. Prefer this to {{ time.today }} which doesn't account for time zone
+{{ time.now }}
+
+// Adjust time
+{{ time.now + time.delta(hours=1) }} // days / months / years
+
+// # of days between two dates
+{{(a.date_1 - a.date_2).days}}
+
+// Time zones:
+{{ time.now|timezone('America/New_York') }} // Eastern
+{{ time.now|timezone('America/Chicago') }} // Central
+{{ time.now|timezone('America/Denver') }} // Mountain
+{{ time.now|timezone('America/Los_Angeles') }} // Pacific
+
+// format a time
+{{ time.now|date_ymd }} // 2025-12-31
+{{ time.now|date_dmy('/') }} // 31/12/2025
+{{ time.now|date_mdy('.') }} // 12.31.2025
+{{ time.now.strftime('%Y%m') }} // 202512
+
+// Parse a date time value from a Quickbase step into a format that the restful API can consume.
+{{a.created_at.strftime('%Y-%m-%dT%H:%M:%S')}}
 
 // list of fields of a record as key/value pairs (e.g. for looping through)
 {{metadata.a.struct.items()}}
