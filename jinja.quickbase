@@ -101,18 +101,10 @@
 // Current loop index (first loop is 1)
 {{metadata.a.loop.index}}
 
-// Pipeline id
-{{runtime.pipeline_id}}
-
-// Pipeline name
-{{runtime.pipeline_name}}
-
-// Pipeline url
-{{runtime.pipeline_url}}
-
-// Url for current run's activities
-{{runtime.activity_url}}
-
-// Pipeline trigger timestamp
-{{runtime.triggered_at}}
+// Pipeline data
+{{runtime.pipeline_id}} // id
+{{runtime.pipeline_name}} // name
+{{runtime.pipeline_url}} // url
+{{runtime.activity_url}} // run activities url
+{{runtime.triggered_at}} // trigger timestamp
 
