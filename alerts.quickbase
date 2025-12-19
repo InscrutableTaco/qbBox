@@ -1,12 +1,23 @@
-// based on a single field
+// based on a single attribute
 var text alert = If([# of Days Late] > 0,
 "<span style='font-size:20px;color:#e61515'><i><b>Ticket is " &
 [# of Days Late] & " days late" & "</b></i></span>","");
 
-// based on multiple criteria.
-var text criteriaOne = "first alert msg";
-var text criteriaTwo = "2nd alert msg";
-var text criteriaThree = "3rd alert msg";
-
-"<span style='font-size:16px;color:#e61515'><i><b>" &
-List("<br>",$criteriaOne,$criteriaTwo,$criteriaThree) & "</b></i></span>"
+// based on multiple attributes - user input field, test record, generic criteria
+var text testAlert = If([Test Record?],"Test Record","");
+var text criteria = If(false,"");
+If(
+    $testAlert != "" or
+    [User Alert] != "" or
+	$criteria != "",
+	
+  "<span style='font-size:16px;color:#e61515'><i><b>" & List("<br>",
+  
+    $testAlert,
+    [User Alert],
+    $criteria)
+    
+    & "</b></i></span>",
+    
+  ""
+)
