@@ -72,7 +72,7 @@
 {{a|count}}
 
 // Current date. Prefer this to {{ time.today }} which doesn't account for time zone
-{{time.now }}
+{{time.now}}
 
 // Adjust time
 {{time.now + time.delta(hours=1)}} // days / months / years
