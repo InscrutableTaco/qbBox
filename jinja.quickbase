@@ -12,6 +12,9 @@
     [do something]
 {% endfor %}
 
+// Hardcoded reference to the first index of a search record step (b)
+{{b[0].field_name}}
+
 // loop over a dictionary
 {% for key, value in dictionary.items() %}
     {{ key }}: {{ value }}
