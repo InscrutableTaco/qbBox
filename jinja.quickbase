@@ -7,6 +7,14 @@
     [otherwise result]
 {% endif %}
 
+// check if not null
+{% if a.field_name}
+{% endif %}
+
+// check against a value
+{% if a.field_name == "value"}
+{% endif %}
+
 // basic loop
 {% for item in list %}
     [do something]
