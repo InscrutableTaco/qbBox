@@ -48,6 +48,7 @@
 
 // Previous field value
 {{a.$prev.status}} // field called status
+// Note that this is NOT usable in a trigger step (e.g. in an advance filter query). Can only be used in later steps.
 
 // Clear/remove a value
 {{CLEAR}}
