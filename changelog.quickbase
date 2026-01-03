@@ -1,0 +1,21 @@
+// json body for an API request to loop through fields of a changed record and create a new record in a log table for each field that changed
+
+{
+  "to": "bvmu7uxsn",
+  "data": [
+    {%- for field, info in metadata.a.struct.items()
+          if field != 'updated_at' and field != 'last_modified_by' and a[field] != a.$prev[field] -%}
+    {
+      "6": { "value": {{a.id|int}} },
+      "7": { "value": {{info.qb_field_id|int}} },
+      "8": { "value": {{a.$prev[field]|to_json}} },
+      "9": { "value": {{a[field]|to_json}} },
+      "10": { "value": {{field|to_json}} },
+      "11": { "value": "{{a.last_modified_by.first_name
+        ~ ' ' ~  a.last_modified_by.last_name}}"},
+"12": { "value": "{{metadata.a.context.occurred_at|replace(' ','T')}}"}
+    }
+    {{ ',' if not loop.last }}
+    {%- endfor -%}
+  ]
+}
