@@ -1,16 +1,16 @@
-// manually add a child record and return to the URL from which you started
-var text url_1 = URLRoot() & "db/" & [_DBID_<child table name>] & "?act=API_GenAddRecordForm" &
-    "&_fid_<reference field id>=" & [Record ID#] & "&z=" & Rurl();
+// manually add a  record and return to the URL from which you started
+var text url_1 = URLRoot() & "db/" & [_DBID_TABLENAME] & "?act=API_GenAddRecordForm" &
+    "&_fid_FIELDNUMBER=" & [Record ID#] & "&z=" & Rurl();
 
 // manually edit the current record and return to the URL from which you started
 var text url_2 = URLRoot() & "db/" & Dbid() & "?a=er&rid=" & URLEncode([Record ID#]) & "&dfid=<form id>" & "&z=" & Rurl();
 
 // automatically update a record and return to the URL from which you started
-var text url_3 = URLRoot() & "db/" & [_DBID_<table name>] & "?a=API_EditRecord&rid=" & [Record ID#] &
+var text url_3 = URLRoot() & "db/" & [_DBID_TABLENAME] & "?a=API_EditRecord&rid=" & [Record ID#] &
     "&_fid_99=1" & "&rdr=" & URLEncode(URLRoot() & "db/" & Dbid() & "?a=doredirect&z=" & Rurl());
 
 // automatically update a record and redirect to a specific page (or any url)
-var text url_4 = URLRoot() & "db/" & [_DBID_<table name>] & "?a=API_EditRecord&rid="  & [Record ID#] &
+var text url_4 = URLRoot() & "db/" & [_DBID_TABLENAME] & "?a=API_EditRecord&rid="  & [Record ID#] &
     "&_fid_99=1" & "&rdr=" & URLEncode(URLRoot() & "db/" & Dbid() & "?a=dbpage&pageID=<page id>");
 
 
