@@ -47,5 +47,33 @@ If(
     [Some Field]="criteria for button to display",
     $button,""
 )
+var text buttonMarkCompleted = "<a title='" & $labelMarkCompleted & "'" &
+	"class='Vibrant Primary SaveBeforeNavigating' " &
+	"style=" & $completeStyle &
+    "href='" & $urlMarkCompleted &
+    "'>Mark completed</a>"
+    ;
+
+// rich text button w/ additional inline styling
+// [colorAutomation] is an app variable that's a hex color]
+var text completeStyle = "'" &
+    "background:#" & [colorAutomation] & "; " &
+    "border:#" & [colorAutomation] & ";'"
+    ;
+var text urlMarkCompleted = URLRoot() & "db/" & [_DBID_ACTIVITIES] &
+	"?a=API_EditRecord&apptoken=" & [apiAppToken] &
+	"&rid=" & [Record ID#] &
+    "&_fid_119=" & URLEncode(Now()) &
+    "&rdr=" & URLEncode(URLRoot() & "db/" & Dbid() &
+    "?a=doredirect&z=" & Rurl())
+    ;
+var text labelMarkCompleted = "Click to mark followup completed for this communication";
+var text buttonMarkCompleted = "<a title='" & $labelMarkCompleted & "'" &
+	"class='Vibrant Primary SaveBeforeNavigating' " &
+	"style=" & $completeStyle &
+    "href='" & $urlMarkCompleted &
+    "'>Mark completed</a>"
+    ;
+
 
 // this is a comment
