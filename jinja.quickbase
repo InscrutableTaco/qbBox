@@ -120,5 +120,6 @@
 {{runtime.activity_url}} // run activities url
 {{runtime.triggered_at}} // trigger timestamp
 
-// here's a comment
+// rich text run stamp
+"Updated by pipeline#<a href='{{runtime.pipeline_url}}''>{{runtime.pipeline_id}}</a>. View pipeline activity <a href='{{runtime.activity_url}}'>here</a>"
 
