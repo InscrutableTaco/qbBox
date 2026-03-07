@@ -9,7 +9,7 @@ var text criteria = If(false,"");
 If(
     $testAlert != "" or
     [User Alert] != "" or
-	$criteria != "",
+    $criteria != "",
 	
   "<span style='font-size:16px;color:#e61515'><i><b>" & List("<br>",
   

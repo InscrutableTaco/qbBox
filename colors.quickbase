@@ -21,3 +21,12 @@ TEAL = #008080
 WHITE = #FFFFFF
 YELLOW = #FFE119
 
+
+List("&nbsp;",
+    "<a class='Vibrant'>Vibrant</a>", // regular grey button
+    "<a class='Vibrant Alert'>Vibrant Alert</a>", // yellowish
+    "<a class='Vibrant Danger'>Vibrant Danger</a>",  // red
+    "<a class='Vibrant Primary'>Vibrant Primary</a>", // blue
+    "<a class='Vibrant Snowy'>Vibrant Snowy</a>",  // white
+    "<a class='Vibrant Success'>Vibrant Success</a>" // green (Doesn't work?)
+)
