@@ -1,4 +1,4 @@
-// manually add a  record and return to the URL from which you started
+// manually add a record and return to the URL from which you started
 var text url_1 = URLRoot() &
     "db/" & [_DBID_TABLENAME] &
     "?act=API_GenAddRecordForm" &
@@ -55,10 +55,10 @@ var text buttonMarkCompleted = "<a title='" & $labelMarkCompleted & "'" &
     ;
 
 // rich text button w/ additional inline styling
-// [colorAutomation] is an app variable that's a hex color]
+// [color] is an app variable that's a hex color (including the #)
 var text completeStyle = "'" &
-    "background:#" & [colorAutomation] & "; " &
-    "border:#" & [colorAutomation] & ";'"
+    "background:" & [color] & "; " &
+    "border:" & [color] & ";'"
     ;
 var text urlMarkCompleted = URLRoot() & "db/" & [_DBID_ACTIVITIES] &
 	"?a=API_EditRecord&apptoken=" & [apiAppToken] &
