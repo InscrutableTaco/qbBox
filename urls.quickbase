@@ -77,4 +77,5 @@ var text buttonMarkCompleted = "<a title='" & $labelMarkCompleted & "'" &
 
 
 // this is a comment
+// lots of comments
 // this too
