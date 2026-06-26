@@ -1,4 +1,4 @@
-# TEST - Federal Arbitration: CPT-Level Change Logger: Bulk Import w/ Idempotent Key
+# Federal Arbitration: CPT-Level Change Bulk Event Recorder w/Backup Queue
 #
 
 # Account slugs:
@@ -6,9 +6,9 @@
 ---
 - META:
     name:
-      "TEST - Federal Arbitration: CPT-Level Change Logger: Bulk Import w/ Idempotent
+      "Federal Arbitration: CPT-Level Change Bulk Event Recorder w/Backup Queue
       Key"
-    enabled: true
+    enabled: false
 - TRIGGER quickbase[rW1X2m8#usap] record on_new_bulk_event -> ab:
     FILTERS:
       - AND:
