@@ -5,19 +5,21 @@
 #  - quickbase[rW1X2m8#usap]: Realm Default Account <None>
 ---
 - META:
-    name: 'TEST - Federal Arbitration: CPT-Level Change Logger: Bulk Import w/ Idempotent
-      Key'
+    name:
+      "TEST - Federal Arbitration: CPT-Level Change Logger: Bulk Import w/ Idempotent
+      Key"
     enabled: true
 - TRIGGER quickbase[rW1X2m8#usap] record on_new_bulk_event -> ab:
     FILTERS:
-    - AND:
-      - cpt_code_not_asa !starts 99100
-      - cpt_code_not_asa !starts 99116
-      - cpt_code_not_asa !starts 99135
-      - cpt_code_not_asa !starts 99140
+      - AND:
+          - cpt_code_not_asa !starts 99100
+          - cpt_code_not_asa !starts 99116
+          - cpt_code_not_asa !starts 99135
+          - cpt_code_not_asa !starts 99140
     inputs-meta:
-      app: '"Federal Arbitration - Pipeline Testing" <bv28x2nss>'
-      export_fields: '"QDE_FirstInvoiceNumber, CPT Code (not ASA), Transaction Sequence
+      app: '"Federal Arbitration" <brkqwr46f>'
+      export_fields:
+        '"QDE_FirstInvoiceNumber, CPT Code (not ASA), Transaction Sequence
         Text Formula, QDE_ONPNoticeSent_Date, QDE_IDRCase_Reference - Initiation Date,
         QDE_IDRCase_Reference - IDR Case Number, QDE_InitialAllowableAmount_TextFormula,
         QDE_InitialAllowableAmount, QDE_InitialPatientResp_TextFormula, QDE_InitialPatientResp,
@@ -25,18 +27,20 @@
         Arbitration, Result (Win/Loss/Settled/Closed/Withdrawn), Date Finalized, Date
         Pmt Expected, Add Log record, QDE_ID" <312, 1035, 1028, 47, 176, 540, 1045,
         91, 1048, 118, 1049, 1034, 1030, 1031, 1032, 1069, 6>'
-      table: '"QDEs" <bv28x2tuq>'
-      trigger_fields: '"QDE_ONPNoticeSent_Date, QDE_IDRCase_Reference - Initiation
+      table: '"QDEs" <btyh8rfs7>'
+      trigger_fields:
+        '"QDE_ONPNoticeSent_Date, QDE_IDRCase_Reference - Initiation
         Date, QDE_IDRCase_Reference - IDR Case Number, QDE_InitialAllowableAmount,
         QDE_InitialPatientResp, Expected After Finalization Arbitration, Result (Win/Loss/Settled/Closed/Withdrawn),
         Date Finalized, Date Pmt Expected" <47, 176, 540, 91, 118, 1034, 1030, 1031,
         1032>'
-      trigger_on_all_fields: 'false'
+      trigger_on_all_fields: "false"
     name: QDE(s) modified
 - ab<>ACTION quickbase[rW1X2m8#usap] bulk_record_set batch_upsert -> al:
     inputs-meta:
-      app: '"Federal Arbitration - Pipeline Testing" <bv28x2nss>'
-      export_fields: '"change_key, ONP Initiated Date, IDR Initiated Date, Invoice,
+      app: '"Federal Arbitration" <brkqwr46f>'
+      export_fields:
+        '"change_key, ONP Initiated Date, IDR Initiated Date, Invoice,
         CPT Code, Transaction Sequence, IDR Case Number, Pre-Arbitration Total Allowed
         Amount, Pre-Arbitration PT Resp, Expected After Finalization Arbitration,
         Result (Win/Loss/Settled/Closed/Withdrawn), Date Finalized, Date Pmt Expected,
@@ -48,9 +52,10 @@
         ONP Initiated Date - Previous Value" <71, 6, 7, 8, 9, 10, 11, 12, 13, 14,
         15, 16, 17, 18, 19, 21, 22, 23, 24, 25, 26, 27, 28, 29>'
       merge_field: '"change_key" <71>'
-      table: '"Athena CPT-Level Changes" <bv28x3ja2>'
+      table: '"Athena CPT-Level Changes" <bvq9k588k>'
     inputs:
-      change_key: "{# result not blank on both sides of the change? #}\n{% set resultMatters\
+      change_key:
+        "{# result not blank on both sides of the change? #}\n{% set resultMatters\
         \ = not (\n    ab.result_win_loss_settled_closed_withdrawn is none and\n \
         \   metadata.ab.record.previous.result_win_loss_settled_closed_withdrawn is\
         \ none\n) %}\n\n{# Normalized curreny field changed? (filters changes where\
@@ -71,59 +76,61 @@
         {# if change doesn't matter, make the change_key an empty string and the row\
         \ will be skipped #}\n{% if changeMatters %}{{ ab.qde_id }} | {{ runtime.triggered_at\
         \ }}{% else %}{% endif %}"
-      cpt_code: '{{ab.cpt_code_not_asa}}'
-      date_finalized: '{{ab.date_finalized}}'
-      date_finalized_previous_value: '{{metadata.ab.record.previous.date_finalized}}'
-      date_pmt_expected: '{{ab.date_pmt_expected}}'
-      date_pmt_expected_previous_value: '{{metadata.ab.record.previous.date_pmt_expected}}'
-      date_time_triggered: '{{runtime.triggered_at}}'
-      date_triggered: '{{ runtime.triggered_at | date_ymd }}'
-      expected_after_finalization_arbitration: '{{ab.expected_after_finalization_arbitration_text_formula}}'
-      expected_after_finalization_arbitration_previous_value: '{{metadata.ab.record.previous.expected_after_finalization_arbitration_text_formula}}'
-      idr_case_number: '{{ab.qde_idr_case_reference_idr_case_number}}'
-      idr_case_number_previous_value: '{{metadata.ab.record.previous.qde_idr_case_reference_idr_case_number}}'
-      idr_initiated_date: '{{ab.qde_idr_case_reference_initiation_date}}'
-      idr_initiated_date_previous_value: '{{metadata.ab.record.previous.qde_idr_case_reference_initiation_date}}'
-      invoice: '{{ab.qde_first_invoice_number}}'
-      onp_initiated_date: '{{ab.qde_onp_notice_sent_date}}'
-      onp_initiated_date_previous_value: '{{metadata.ab.record.previous.qde_onp_notice_sent_date}}'
-      pre_arbitration_pt_resp: '{{ab.qde_initial_patient_resp_text_formula}}'
-      pre_arbitration_pt_resp_previous_value: '{{metadata.ab.record.previous.qde_initial_patient_resp_text_formula}}'
-      pre_arbitration_total_allowed_amount: '{{ab.qde_initial_allowable_amount_text_formula}}'
-      pre_arbitration_total_allowed_amount_previous_value: '{{metadata.ab.record.previous.qde_initial_allowable_amount_text_formula}}'
-      result_win_loss_settled_closed_withdrawn: '{{ab.result_win_loss_settled_closed_withdrawn}}'
-      result_win_loss_settled_closed_withdrawn_previous_value: '{{metadata.ab.record.previous.result_win_loss_settled_closed_withdrawn}}'
-      transaction_sequence: '{{ab.transaction_sequence_text_formula}}'
+      cpt_code: "{{ab.cpt_code_not_asa}}"
+      date_finalized: "{{ab.date_finalized}}"
+      date_finalized_previous_value: "{{metadata.ab.record.previous.date_finalized}}"
+      date_pmt_expected: "{{ab.date_pmt_expected}}"
+      date_pmt_expected_previous_value: "{{metadata.ab.record.previous.date_pmt_expected}}"
+      date_time_triggered: "{{runtime.triggered_at}}"
+      date_triggered: "{{ runtime.triggered_at | date_ymd }}"
+      expected_after_finalization_arbitration: "{{ab.expected_after_finalization_arbitration_text_formula}}"
+      expected_after_finalization_arbitration_previous_value: "{{metadata.ab.record.previous.expected_after_finalization_arbitration_text_formula}}"
+      idr_case_number: "{{ab.qde_idr_case_reference_idr_case_number}}"
+      idr_case_number_previous_value: "{{metadata.ab.record.previous.qde_idr_case_reference_idr_case_number}}"
+      idr_initiated_date: "{{ab.qde_idr_case_reference_initiation_date}}"
+      idr_initiated_date_previous_value: "{{metadata.ab.record.previous.qde_idr_case_reference_initiation_date}}"
+      invoice: "{{ab.qde_first_invoice_number}}"
+      onp_initiated_date: "{{ab.qde_onp_notice_sent_date}}"
+      onp_initiated_date_previous_value: "{{metadata.ab.record.previous.qde_onp_notice_sent_date}}"
+      pre_arbitration_pt_resp: "{{ab.qde_initial_patient_resp_text_formula}}"
+      pre_arbitration_pt_resp_previous_value: "{{metadata.ab.record.previous.qde_initial_patient_resp_text_formula}}"
+      pre_arbitration_total_allowed_amount: "{{ab.qde_initial_allowable_amount_text_formula}}"
+      pre_arbitration_total_allowed_amount_previous_value: "{{metadata.ab.record.previous.qde_initial_allowable_amount_text_formula}}"
+      result_win_loss_settled_closed_withdrawn: "{{ab.result_win_loss_settled_closed_withdrawn}}"
+      result_win_loss_settled_closed_withdrawn_previous_value: "{{metadata.ab.record.previous.result_win_loss_settled_closed_withdrawn}}"
+      transaction_sequence: "{{ab.transaction_sequence_text_formula}}"
     name: Import to changes table
 - ACTION quickbase[rW1X2m8#usap] record create -> am:
     inputs-meta:
-      app: '"Federal Arbitration - Pipeline Testing" <bv28x2nss>'
-      export_fields: '"Batch Size, # Added, # Unchanged, # Updated, # Skipped, status,
+      app: '"Federal Arbitration" <brkqwr46f>'
+      export_fields:
+        '"Batch Size, # Added, # Unchanged, # Updated, # Skipped, status,
         DateTime_Triggered, Loop Index, Pipeline ID, # Processed, Pipeline Run ID,
         Pipeline Run URL, Pipeline URL, Date_Triggered, change_key" <44, 12, 14, 13,
-        10, 8, 7, 45, 46, 9, 47, 48, 49, 55, 17>'
-      table: '"Import Queue" <bv5hckden>'
+        10, 8, 6, 45, 46, 9, 47, 48, 49, 53, 17>'
+      table: '"Import Queue" <bv6cbx29p>'
     inputs:
-      added: '{{metadata.al.records_added}}'
-      batch_size: '{{metadata.al.batch.size}}'
+      added: "{{metadata.al.records_added}}"
+      batch_size: "{{metadata.al.batch.size}}"
       change_key: SUMMARY
-      date_time_triggered: '{{runtime.triggered_at}}'
-      date_triggered: '{{ runtime.triggered_at | date_ymd }}'
-      loop_index: '{{metadata.al.loop.index}}'
-      pipeline_id: '{{runtime.pipeline_id}}'
-      pipeline_run_id: '{{runtime.run_id}}'
-      pipeline_run_url: '{{runtime.activity_url}}'
-      pipeline_url: '{{runtime.pipeline_url}}'
-      processed: '{{metadata.al.records_processed}}'
-      skipped: '{{metadata.al.records_skipped}}'
+      date_time_triggered: "{{runtime.triggered_at}}"
+      date_triggered: "{{ runtime.triggered_at | date_ymd }}"
+      loop_index: "{{metadata.al.loop.index}}"
+      pipeline_id: "{{runtime.pipeline_id}}"
+      pipeline_run_id: "{{runtime.run_id}}"
+      pipeline_run_url: "{{runtime.activity_url}}"
+      pipeline_url: "{{runtime.pipeline_url}}"
+      processed: "{{metadata.al.records_processed}}"
+      skipped: "{{metadata.al.records_skipped}}"
       status: Completed
-      unchanged: '{{metadata.al.records_unchanged}}'
-      updated: '{{metadata.al.records_updated}}'
+      unchanged: "{{metadata.al.records_unchanged}}"
+      updated: "{{metadata.al.records_updated}}"
     name: Log import summary
 - al<>ACTION quickbase[rW1X2m8#usap] bulk_record_set batch_upsert -> aq:
     inputs-meta:
-      app: '"Federal Arbitration - Pipeline Testing" <bv28x2nss>'
-      export_fields: '"Source ID, Source Position, change_key, CPT Code, Date Finalized,
+      app: '"Federal Arbitration - Pipeline Testing" <brkqwr46f>'
+      export_fields:
+        '"Source ID, Source Position, change_key, CPT Code, Date Finalized,
         Date Finalized - Previous Value, Date Pmt Expected, Date Pmt Expected - Previous
         Value, Expected After Finalization Arbitration, Expected After Finalization
         Arbitration - Previous Value, IDR Case Number, IDR Case Number - Previous
@@ -137,75 +144,98 @@
         Run ID, Pipeline Run URL, Pipeline URL, Date_Triggered" <42, 43, 17, 20, 18,
         19, 21, 22, 25, 26, 27, 28, 29, 30, 11, 31, 15, 32, 33, 34, 35, 36, 37, 38,
         39, 8, 40, 7, 41, 46, 47, 48, 49, 55>'
-      table: '"Import Queue" <bv5hckden>'
+      table: '"Import Queue" <bv6cbx29p>'
     inputs:
-      change_key: '{{ al.import_error.record.change_key if al.import_error.record.change_key
-        is not none else '''' }}'
-      cpt_code: '{{al.import_error.record.cpt_code if al.import_error.record.cpt_code
-        is not none else al.mapping_error.item.cpt_code}}'
-      date_finalized: '{{al.import_error.record.date_finalized if al.import_error.record.date_finalized
-        is not none else al.mapping_error.item.date_finalized}}'
-      date_finalized_previous_value: '{{al.import_error.record.date_finalized_previous_value
-        if al.import_error.record.date_finalized_previous_value is not none else ''''}}'
-      date_pmt_expected: '{{al.import_error.record.date_pmt_expected if al.import_error.record.date_pmt_expected
-        is not none else al.mapping_error.item.date_pmt_expected}}'
-      date_pmt_expected_previous_value: '{{al.import_error.record.date_pmt_expected_previous_value
+      change_key:
+        "{{ al.import_error.record.change_key if al.import_error.record.change_key
+        is not none else '' }}"
+      cpt_code:
+        "{{al.import_error.record.cpt_code if al.import_error.record.cpt_code
+        is not none else al.mapping_error.item.cpt_code}}"
+      date_finalized:
+        "{{al.import_error.record.date_finalized if al.import_error.record.date_finalized
+        is not none else al.mapping_error.item.date_finalized}}"
+      date_finalized_previous_value:
+        "{{al.import_error.record.date_finalized_previous_value
+        if al.import_error.record.date_finalized_previous_value is not none else ''}}"
+      date_pmt_expected:
+        "{{al.import_error.record.date_pmt_expected if al.import_error.record.date_pmt_expected
+        is not none else al.mapping_error.item.date_pmt_expected}}"
+      date_pmt_expected_previous_value:
+        "{{al.import_error.record.date_pmt_expected_previous_value
         if al.import_error.record.date_pmt_expected_previous_value is not none else
-        ''''}}'
-      date_time_triggered: '{{runtime.triggered_at}}'
-      date_triggered: '{{ runtime.triggered_at | date_ymd }}'
-      expected_after_finalization_arbitration: '{{al.import_error.record.expected_after_finalization_arbitration
+        ''}}"
+      date_time_triggered: "{{runtime.triggered_at}}"
+      date_triggered: "{{ runtime.triggered_at | date_ymd }}"
+      expected_after_finalization_arbitration:
+        "{{al.import_error.record.expected_after_finalization_arbitration
         if al.import_error.record.expected_after_finalization_arbitration is not none
-        else al.mapping_error.item.expected_after_finalization_arbitration}}'
-      expected_after_finalization_arbitration_previous_value: '{{al.import_error.record.expected_after_finalization_arbitration_previous_value
+        else al.mapping_error.item.expected_after_finalization_arbitration}}"
+      expected_after_finalization_arbitration_previous_value:
+        "{{al.import_error.record.expected_after_finalization_arbitration_previous_value
         if al.import_error.record.expected_after_finalization_arbitration_previous_value
-        is not none else ''''}}'
-      idr_case_number: '{{al.import_error.record.idr_case_number_previous_value if
-        al.import_error.record.idr_case_number is not none else al.mapping_error.item.idr_case_number}}'
-      idr_case_number_previous_value: '{{al.import_error.record.idr_case_number_previous_value
+        is not none else ''}}"
+      idr_case_number:
+        "{{al.import_error.record.idr_case_number_previous_value if
+        al.import_error.record.idr_case_number is not none else al.mapping_error.item.idr_case_number}}"
+      idr_case_number_previous_value:
+        "{{al.import_error.record.idr_case_number_previous_value
         if al.import_error.record.idr_case_number_previous_value is not none else
-        ''''}}'
-      idr_initiated_date: '{{al.import_error.record.idr_initiated_date if al.import_error.record.idr_initiated_date
-        is not none else al.mapping_error.item.idr_initiated_date}}'
-      idr_initiated_date_previous_value: '{{al.import_error.record.idr_initiated_date_previous_value
+        ''}}"
+      idr_initiated_date:
+        "{{al.import_error.record.idr_initiated_date if al.import_error.record.idr_initiated_date
+        is not none else al.mapping_error.item.idr_initiated_date}}"
+      idr_initiated_date_previous_value:
+        "{{al.import_error.record.idr_initiated_date_previous_value
         if al.import_error.record.idr_initiated_date_previous_value is not none else
-        ''''}}'
-      import_error_message_s: '{{al.import_error.messages}}'
-      invoice: '{{al.import_error.record.invoice if al.import_error.record.invoice
-        is not none else al.mapping_error.item.invoice}}'
-      mapping_error_affected_field: '{{al.mapping_error.affected_field}}'
-      mapping_error_message: '{{al.mapping_error.message}}'
-      onp_initiated_date: '{{al.import_error.record.onp_initiated_date if al.import_error.record.onp_initiated_date
-        is not none else al.mapping_error.item.onp_initiated_date}}'
-      onp_initiated_date_previous_value: '{{al.import_error.record.onp_initiated_date_previous_value
+        ''}}"
+      import_error_message_s: "{{al.import_error.messages}}"
+      invoice:
+        "{{al.import_error.record.invoice if al.import_error.record.invoice
+        is not none else al.mapping_error.item.invoice}}"
+      mapping_error_affected_field: "{{al.mapping_error.affected_field}}"
+      mapping_error_message: "{{al.mapping_error.message}}"
+      onp_initiated_date:
+        "{{al.import_error.record.onp_initiated_date if al.import_error.record.onp_initiated_date
+        is not none else al.mapping_error.item.onp_initiated_date}}"
+      onp_initiated_date_previous_value:
+        "{{al.import_error.record.onp_initiated_date_previous_value
         if al.import_error.record.onp_initiated_date_previous_value is not none else
-        ''''}}'
-      pipeline_id: '{{runtime.pipeline_id}}'
-      pipeline_run_id: '{{runtime.run_id}}'
-      pipeline_run_url: '{{runtime.activity_url}}'
-      pipeline_url: '{{runtime.pipeline_url}}'
-      pre_arbitration_pt_resp: '{{al.import_error.record.pre_arbitration_pt_resp if
-        al.import_error.record.pre_arbitration_pt_resp is not none else al.mapping_error.item.pre_arbitration_pt_resp}}'
-      pre_arbitration_pt_resp_previous_value: '{{al.import_error.record.pre_arbitration_pt_resp_previous_value
+        ''}}"
+      pipeline_id: "{{runtime.pipeline_id}}"
+      pipeline_run_id: "{{runtime.run_id}}"
+      pipeline_run_url: "{{runtime.activity_url}}"
+      pipeline_url: "{{runtime.pipeline_url}}"
+      pre_arbitration_pt_resp:
+        "{{al.import_error.record.pre_arbitration_pt_resp if
+        al.import_error.record.pre_arbitration_pt_resp is not none else al.mapping_error.item.pre_arbitration_pt_resp}}"
+      pre_arbitration_pt_resp_previous_value:
+        "{{al.import_error.record.pre_arbitration_pt_resp_previous_value
         if al.import_error.record.pre_arbitration_pt_resp_previous_value is not none
-        else ''''}}'
-      pre_arbitration_total_allowed_amount: '{{al.import_error.record.pre_arbitration_total_allowed_amount
+        else ''}}"
+      pre_arbitration_total_allowed_amount:
+        "{{al.import_error.record.pre_arbitration_total_allowed_amount
         if al.import_error.record.pre_arbitration_total_allowed_amount is not none
-        else al.mapping_error.item.pre_arbitration_total_allowed_amount}}'
-      pre_arbitration_total_allowed_amount_previous_value: '{{al.import_error.record.pre_arbitration_total_allowed_amount_previous_value
+        else al.mapping_error.item.pre_arbitration_total_allowed_amount}}"
+      pre_arbitration_total_allowed_amount_previous_value:
+        "{{al.import_error.record.pre_arbitration_total_allowed_amount_previous_value
         if al.import_error.record.pre_arbitration_total_allowed_amount_previous_value
-        is not none else ''''}}'
-      result_win_loss_settled_closed_withdrawn: '{{al.import_error.record.result_win_loss_settled_closed_withdrawn
+        is not none else ''}}"
+      result_win_loss_settled_closed_withdrawn:
+        "{{al.import_error.record.result_win_loss_settled_closed_withdrawn
         if al.import_error.record.result_win_loss_settled_closed_withdrawn is not
-        none else al.mapping_error.item.result_win_loss_settled_closed_withdrawn}}'
-      result_win_loss_settled_closed_withdrawn_previous_value: '{{al.import_error.record.result_win_loss_settled_closed_withdrawn_previous_value
+        none else al.mapping_error.item.result_win_loss_settled_closed_withdrawn}}"
+      result_win_loss_settled_closed_withdrawn_previous_value:
+        "{{al.import_error.record.result_win_loss_settled_closed_withdrawn_previous_value
         if al.import_error.record.result_win_loss_settled_closed_withdrawn_previous_value
-        is not none else ''''}}'
-      source_id: '{{al.source_id}}'
-      source_position: '{{al.position}}'
-      status: '{% if "Can not lookup for record by empty value" in al.import_error.messages
+        is not none else ''}}"
+      source_id: "{{al.source_id}}"
+      source_position: "{{al.position}}"
+      status:
+        '{% if "Can not lookup for record by empty value" in al.import_error.messages
         | join(" ") %}Bypassed{% else %}Pending{% endif %}'
-      transaction_sequence: '{{al.import_error.record.transaction_sequence if al.import_error.record.transaction_sequence
-        is not none else al.mapping_error.item.transaction_sequence}}'
+      transaction_sequence:
+        "{{al.import_error.record.transaction_sequence if al.import_error.record.transaction_sequence
+        is not none else al.mapping_error.item.transaction_sequence}}"
     name: Enqueue skipped rows
 ...
