@@ -141,9 +141,9 @@
         Allowed Amount - Previous Value, Result (Win/Loss/Settled/Closed/Withdrawn),
         Result (Win/Loss/Settled/Closed/Withdrawn) - Previous Value, status, Transaction
         Sequence, DateTime_Triggered, Mapping Error Affected Field, Pipeline ID, Pipeline
-        Run ID, Pipeline Run URL, Pipeline URL, Date_Triggered" <42, 43, 17, 20, 18,
-        19, 21, 22, 25, 26, 27, 28, 29, 30, 11, 31, 15, 32, 33, 34, 35, 36, 37, 38,
-        39, 8, 40, 7, 41, 46, 47, 48, 49, 55>'
+        Run ID, Pipeline Run URL, Pipeline URL, Date_Triggered" <42, 43, 17, 22, 20,
+        21, 23, 24, 25, 26, 27, 28, 29, 30, 11, 31, 15, 32, 33, 34, 35, 36, 37, 38,
+        39, 8, 40, 6, 41, 46, 47, 48, 49, 53>'
       table: '"Import Queue" <bv6cbx29p>'
     inputs:
       change_key:
