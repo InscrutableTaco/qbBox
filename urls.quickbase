@@ -15,7 +15,9 @@ var text url_2 = URLRoot() &
 // automatically update a record and return to the URL from which you started
 var text url_3 = URLRoot()
     & "db/" & [_DBID_TABLENAME] &
-    "?a=API_EditRecord&rid=" & [Record ID#] &
+    "?a=API_EditRecord" &
+    "&apptoken=" & [App Token] &
+    "&rid=" & [Record ID#] &
     "&_fid_<FIELD ID>=<VALUE>" &
     "&rdr=" & URLEncode(URLRoot() &
         "db/" & Dbid() &
